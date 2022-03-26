@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', 'App\Http\Controllers\LoginController@register');
 Route::post('/login', 'App\Http\Controllers\LoginController@login');
-Route::get('/test', 'App\Http\Controllers\Controller@test');
+Route::get('/list', 'App\Http\Controllers\Account\AccountController@getAll');

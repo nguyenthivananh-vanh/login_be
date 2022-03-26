@@ -26,18 +26,19 @@ class loginService
 
     public function login(Request $request)
     {
-        // try
-        // {
+        try
+        {           
             $rules = [
-                'name' => 'required',
+                'username' => 'required',
                 'password' => 'required',
                 // |regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])[A-Za-z\d!@#$%^&*()\-_=+{};:,<.>]{8,}$/',
             ];
             $message = [
-                'name.required' => 'Username không được để trống',
+                'username.required' => 'Username không được để trống',
                 'password.required' => 'Password không được để trống',
                 // 'password.regex' => 'Mật khẩu bắt buộc ít nhất 8 kí tự bao gồm chữ hoa, chữ thường, số và kí tự đặc biệt',
             ];
+
             $validator = Validator::make($request->all(), $rules, $message);
             if ($validator->fails()) {
                 return response()->json([
@@ -46,7 +47,7 @@ class loginService
                     'data' => []
                 ]);
             }else{
-                if(Auth::attempt(['name' => $request->name, 'password' => $request->password])){ 
+                if(Auth::attempt(['username' => $request->username, 'password' => $request->password])){ 
                     $user = Auth::user(); 
                     return response()->json([
                         "status" => 'success',
@@ -62,15 +63,14 @@ class loginService
                 }     
             }
             
-        // }
-        // catch (\Exception $e)
-        // {
-        //     return response()->json([
-        //         'status' => 'error',
-        //         'message' => 'Đã xảy ra lỗi, vui lòng quay trở lại sau',
-        //         'data' => []
-        //     ], 500);
-        // }
+        }catch (\Exception $e)
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Đã xảy ra lỗi, vui lòng quay trở lại sau',
+                'data' => []
+            ], 500);
+        }
 
           
     
