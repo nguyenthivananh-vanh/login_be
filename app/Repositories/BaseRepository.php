@@ -17,7 +17,7 @@ class BaseRepository implements RepositoryInterface
 
     public function getAll()
     {
-        return $this->model->latest()->get();
+        return $this->model->get();
     }
 
     public function update($target,$data)

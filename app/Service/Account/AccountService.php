@@ -8,61 +8,71 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use App\Repositories\Account\AccountRepository;
-
+use App\Service\ValidateService\ValidateAccountService\ValidateCreateAccountService;
+use Illuminate\Support\Facades\Validator;
 class AccountService
 {
-    // protected $validateAccountManagerService;
-    // protected $validateUpdateAccountManagerService;
-    // protected $validateDeleteAccountManagerService;
-    // protected $userAccountRepository;
-    // protected $employeeRepository;
-    protected $account;
 
-    public function __construct(AccountRepository $account)
+    protected $account;
+    protected $validateCreateAccount;
+    public function __construct(AccountRepository $account, ValidateCreateAccountService $validateCreateAccount)
     {
         $this->account = $account;
+        $this->validateCreateAccount = $validateCreateAccount;
     }
     /**
      * accountManagerService constructor.
      */
-    
+
     public function getAll(Request $request, $keyConfigApi)
     {
         try
         {
             $data = $this->account->getAll();
             return response()->json([
-                    'status' => 'success',
-                    'message' => "Danh sách các tài khoản",
-                    'data' => $data
-                ]);
-            // $linkApi = Config::get('link_api_icarm.base_url').Config::get("link_api_icarm.$keyConfigApi");
-            // $token = $request->header('Authorization');
-            
-            // $response = Http::withHeaders([
-            //     'Authorization' => $token
-            // ])->get($linkApi, []); 
-            // return $response;
-            // $data = json_decode($response->body(), true)['data'];
-            // $message = json_decode($response->body(), true)['message'];
-            // $status = json_decode($response->body(), true)['status'];
-            // $statusCode = $response->status();
-            // return response()->json([
-            //     'status' => $status,
-            //     'message' => $message,
-            //     'data' => $data
-            // ], $statusCode);
-            // return $this->responseToClient($response);
+                'status' => 'success',
+                'message' => "Danh sách các tài khoản",
+                'data' => $data
+            ]);
+
         }
         catch (\Exception $e)
         {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Đã xảy ra lỗi, vui lòng quay trở lại sau', 
+                'message' => 'Đã xảy ra lỗi, vui lòng quay trở lại sau',
                 'data' => []
             ], 500);
         }
     }
 
-    
+    public function create(Request $request){
+
+        try {
+            if ($this->validateCreateAccount->validateInputCreateAccount($request) === true) {
+                $data = [
+                    'username' => $request->username,
+                    'email' => $request->email
+                ];
+                $this->account->create($data);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => "Thêm thành công",
+                    'data' => $data
+                ]);
+            } else {
+                return $this->validateCreateAccount->validateInputCreateAccount($request);
+            }
+        }catch (\Exception $e)
+            {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Đã xảy ra lỗi, vui lòng quay trở lại sau',
+                    'data' => []
+                ], 500);
+            }
+
+    }
+
+
 }

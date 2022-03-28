@@ -20,4 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', 'App\Http\Controllers\LoginController@register');
 Route::post('/login', 'App\Http\Controllers\LoginController@login');
-Route::get('/list', 'App\Http\Controllers\Account\AccountController@getAll');
+
+
+Route::group(['prefix' => '/account'], function (){  
+    Route::get('/list', 'App\Http\Controllers\Account\AccountController@getAll');
+    Route::post('/add', 'App\Http\Controllers\Account\AccountController@create');
+});

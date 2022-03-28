@@ -24,4 +24,9 @@ class AccountController extends Controller
     {
         return $this->AccountService->getAll($request, 'admin_get_all');
     }
+
+    public function create(Request $request){
+        return $this->AccountService->create($request);
+    }
+
 }

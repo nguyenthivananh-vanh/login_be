@@ -2,10 +2,11 @@
 
 namespace App\Repositories\Account;
 
-use App\Repositories\BaseRepository;
+// use App\Repositories\BaseRepository;
 use App\Models\User;
 
 use App\Repositories\Account\AccountRepositoryInterface;
+use App\Repositories\BaseRepository;
 
 class AccountRepository extends BaseRepository implements AccountRepositoryInterface
 {
@@ -20,5 +21,6 @@ class AccountRepository extends BaseRepository implements AccountRepositoryInter
         parent::__construct($model);
     }
 
+    
 
 }
