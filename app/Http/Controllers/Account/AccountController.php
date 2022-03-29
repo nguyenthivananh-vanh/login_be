@@ -19,7 +19,7 @@ class AccountController extends Controller
     {
         $this->AccountService = $AccountService;
     }
-    
+
     public function getAll(Request $request)
     {
         return $this->AccountService->getAll($request, 'admin_get_all');
@@ -27,6 +27,10 @@ class AccountController extends Controller
 
     public function create(Request $request){
         return $this->AccountService->create($request);
+    }
+
+    public function find(Request $request){
+        return $this->AccountService->find($request);
     }
 
 }

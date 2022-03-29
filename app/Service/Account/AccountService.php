@@ -74,5 +74,32 @@ class AccountService
 
     }
 
+    public function find(Request $request){
+
+        try {
+            $data = $this->account->find($request->id);
+            if(isset($data) && $data != null){
+                return response()->json([
+                    'status' => 'success',
+                    'message' => "Lấy dữ liệu thành công",
+                    'data' => $data
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Tài khoản không tồn tại',
+                    'data' => []
+                ]);
+            }
+        }catch (\Exception $e)
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Đã xảy ra lỗi, vui lòng quay trở lại sau',
+                'data' => []
+            ], 500);
+        }
+
+    }
 
 }

@@ -35,4 +35,12 @@ class BaseRepository implements RepositoryInterface
         $target = $this->model->where($clause)->first();
         return $target->delete();
     }
+    public function find($data){
+        return $this->model->find($data)->first();
+    }
+
+    public function get($clause)
+    {
+       return $this->model->where($clause)->get();
+    }
 }
