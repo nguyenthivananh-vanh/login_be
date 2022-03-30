@@ -15,9 +15,9 @@ class BaseRepository implements RepositoryInterface
         $this->model = $model;
     }
 
-    public function getAll()
+    public function getAll($raw)
     {
-        return $this->model->get();
+        return $this->model->select($raw)->get();
     }
 
     public function update($target,$data)
@@ -36,11 +36,11 @@ class BaseRepository implements RepositoryInterface
         return $target->delete();
     }
     public function find($data){
-        return $this->model->find($data)->first();
+        return $this->model->find($data);
     }
 
-    public function get($clause)
+    public function get($clause, $raw)
     {
-       return $this->model->where($clause)->get();
+       return $this->model->where($clause)->select($raw)->get();
     }
 }

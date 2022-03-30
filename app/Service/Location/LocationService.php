@@ -28,7 +28,7 @@ class LocationService
     public function getCity(){
         try
         {
-            $cities = $this->cities->getAll();
+            $cities = $this->cities->getAll(['id','local_city_name']);
             return response()->json([
                 'status' => 'success',
                 'message' => "Danh sách các Tỉnh/ Thành phố",
@@ -51,7 +51,7 @@ class LocationService
         {
             $city = $this->cities->find($request->id);
             if(isset($city) && $city != null){
-                $districts = $this->districts->get([['local_city_id', $request->id]]);
+                $districts = $this->districts->get([['local_city_id', $request->id]], ['id','local_district_name']);
                 return response()->json([
                     'status' => 'success',
                     'message' => "Danh sách các Quận/huyện",
@@ -82,7 +82,7 @@ class LocationService
             $city = $this->cities->find($request->city_id);
             $district = $this->districts->find($request->district_id);
             if(isset($city) && $city != null && isset($district) && $district != null){
-                $ward = $this->wards->get([['local_city_id', $request->city_id],['local_district_id', $request->district_id]]);
+                $ward = $this->wards->get([['local_city_id', $request->city_id],['local_district_id', $request->district_id]], ['id','local_ward_name']);
                 return response()->json([
                     'status' => 'success',
                     'message' => "Danh sách các xã",
