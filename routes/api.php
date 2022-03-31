@@ -33,3 +33,5 @@ Route::group(['prefix' => '/location'], function (){
     Route::get('/district', 'App\Http\Controllers\LocationController@getDistrict');
     Route::get('/ward', 'App\Http\Controllers\LocationController@getWard');
 });
+
+Route::get('/time', 'App\Http\Controllers\Controller@testTime');

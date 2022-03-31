@@ -28,7 +28,13 @@ class AccountService
     {
         try
         {
-            $data = $this->account->getAll();
+            if(isset($request->paginate) && $request->paginate !== null){
+                $data = $this->account->paginate(['id', 'username','email','created_at'],$request->paginate);
+            }else{
+                $data = $this->account->paginate(['id', 'username','email','created_at'],4);
+            }
+
+//    dd($data);
             return response()->json([
                 'status' => 'success',
                 'message' => "Danh sách các tài khoản",

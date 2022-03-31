@@ -33,7 +33,7 @@ class LocationService
                 'status' => 'success',
                 'message' => "Danh sách các Tỉnh/ Thành phố",
                 'data' => $cities
-            ]);
+            ], 200);
 
         }
         catch (\Exception $e)
@@ -56,13 +56,13 @@ class LocationService
                     'status' => 'success',
                     'message' => "Danh sách các Quận/huyện",
                     'data' => $districts
-                ]);
+                ], 200);
             }else{
                 return response()->json([
                     'status' => 'error',
                     'message' => "Không tồn tại thành phố",
                     'data' => []
-                ]);
+                ], 412);
             }
 
         }
@@ -87,13 +87,13 @@ class LocationService
                     'status' => 'success',
                     'message' => "Danh sách các xã",
                     'data' => $ward
-                ]);
+                ], 200);
             }else{
                 return response()->json([
                     'status' => 'error',
                     'message' => "Không tồn tại thành phố / Quận, huyện",
                     'data' => []
-                ]);
+                ], 412);
             }
 
         }

@@ -27,7 +27,7 @@ class loginService
     public function login(Request $request)
     {
         try
-        {           
+        {
             $rules = [
                 'username' => 'required',
                 'password' => 'required',
@@ -45,24 +45,24 @@ class loginService
                     'status' => 'error',
                     'message' => $validator->errors()->all()[0],
                     'data' => []
-                ]);
+                ], 419);
             }else{
-                if(Auth::attempt(['username' => $request->username, 'password' => $request->password])){ 
-                    $user = Auth::user(); 
+                if(Auth::attempt(['username' => $request->username, 'password' => $request->password])){
+                    $user = Auth::user();
                     return response()->json([
                         "status" => 'success',
                         "message" => "Đăng nhập thành công",
                         "data" => $user,
-                    ]);
-                } 
-                else{ 
+                    ], 200);
+                }
+                else{
                     return response()->json([
                         "status" => 'error',
                         "message" => "Đăng nhập thất bại",
-                    ]);
-                }     
+                    ], 419);
+                }
             }
-            
+
         }catch (\Exception $e)
         {
             return response()->json([
@@ -72,12 +72,12 @@ class loginService
             ], 500);
         }
 
-          
-    
+
+
     }
     public function register(Request $request)
     {
-       
+
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
@@ -87,5 +87,5 @@ class loginService
             "message" => "Đăng kí thành công",
             "data" => $user,
         ]);
-    } 
+    }
 }
