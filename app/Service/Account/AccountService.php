@@ -28,19 +28,42 @@ class AccountService
     {
         try
         {
-            if(isset($request->paginate) && $request->paginate !== null){
-                $data = $this->account->paginate(['id', 'username','email','created_at'],$request->paginate);
+            $current_page = $request->current_page;
+            if(isset($limit) && $limit > 0){
+                $limit = $request->limit;
             }else{
-                $data = $this->account->paginate(['id', 'username','email','created_at'],4);
+                $limit = 3;
+            }
+            if(isset($current_page) && $current_page > 0){
+                $current_page = $request->current_page;
+            }else{
+                $current_page = 1;
             }
 
-//    dd($data);
-            return response()->json([
-                'status' => 'success',
-                'message' => "Danh sách các tài khoản",
-                'data' => $data
-            ]);
+            $total_records = $this->account->getTotal();
+            $total_page = ceil($total_records / $limit);
 
+            if ($current_page > $total_page){
+                $current_page = $total_page;
+            }
+            else if ($current_page < 1){
+                $current_page = 1;
+            }
+            $start = ($current_page - 1) * $limit;
+            if(isset($start) && $start >= 0){
+                $data = $this->account->paginate($start, $limit);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => "Danh sách các tài khoản",
+                    'data' => $data, 'current_page'=> $current_page, 'total_page' => $total_page, 'limit' => $limit
+                ], 200);
+            }else{
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "Hiện chưa có tài khoản nào trong danh sách",
+                    'data' => []
+                ], 419);
+            }
         }
         catch (\Exception $e)
         {
@@ -65,7 +88,7 @@ class AccountService
                     'status' => 'success',
                     'message' => "Thêm thành công",
                     'data' => $data
-                ]);
+                ], 200);
             } else {
                 return $this->validateCreateAccount->validateInputCreateAccount($request);
             }
@@ -89,13 +112,13 @@ class AccountService
                     'status' => 'success',
                     'message' => "Lấy dữ liệu thành công",
                     'data' => $data
-                ]);
+                ], 200);
             }else{
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Tài khoản không tồn tại',
                     'data' => []
-                ]);
+                ], 419);
             }
         }catch (\Exception $e)
         {

@@ -10,5 +10,6 @@ interface RepositoryInterface
     public function create($data);
     public function find($data);
     public function get($clause, $raw);
-    public function paginate($raw, $size);
+    public function paginate($start, $limit);
+    public function getTotal();
 }

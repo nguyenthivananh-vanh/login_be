@@ -44,7 +44,11 @@ class BaseRepository implements RepositoryInterface
        return $this->model->where($clause)->select($raw)->get();
     }
 
-    public function paginate($raw, $size){
-        return $this->model->select($raw)->paginate($size);
+    public function paginate($start, $limit){
+        return $this->model->offset($start)->limit($limit)->get();
+    }
+
+    public function getTotal(){
+        return $this->model->count();
     }
 }
